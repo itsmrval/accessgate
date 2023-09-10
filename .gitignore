@@ -87,6 +87,12 @@ web_modules/
 .next
 out
 
+database.db
+.DS_Store
+package-lock.json
+.idea/
+
+
 # Nuxt.js build / generate output
 .nuxt
 dist

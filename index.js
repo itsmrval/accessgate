@@ -1,8 +1,14 @@
 const { default: axios } = require("axios");
 const express = require("express");
-const path = require("path");
 const app = express();
 const session = require('express-session');
+const databaseService = require('./services/database.service');
+
+databaseService.sync().then(() => {
+    console.log("Database ready");
+})
+
+
 require('dotenv').config()
 
 app.use(
@@ -27,6 +33,10 @@ app.get("/", (req, res) => {
 
 app.get("/login", (req, res) => {
     res.render('login')
+});
+
+app.get("/keys", (req, res) => {
+    res.render('keys')
 });
 
 var auth_route = require('./routes/auth.route');

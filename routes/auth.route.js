@@ -14,7 +14,7 @@ router.get("/callback", async (req, res) => {
     const access_token = await authService.getToken(req.query.code);
     const user = await authService.fetchUser(access_token);
     if (user) {
-        console.log(user)
+        await authService.syncUser(user);
         req.session.access_token = access_token;
         req.session.user = user;
         req.session.loggedin = true;

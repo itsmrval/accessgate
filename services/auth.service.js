@@ -1,4 +1,5 @@
 const {default: axios} = require("axios");
+const User = require('../model/user.model')
 
 async function getToken(code) {
     var client_id = process.env.GITHUB_CLIENT_ID
@@ -15,24 +16,44 @@ async function getToken(code) {
         })
     });
     const text = await request.text();
-    console.log("RESPONSE!!!");
     const params = new URLSearchParams(text);
     return params.get("access_token");
 };
 
-async function fetchUser(access_token) {
-    console.log('called')
-    const { data } = await axios({
-        url: 'https://api.github.com/user',
-        method: 'get',
-        headers: {
-            Authorization: `token ${access_token}`,
-        },
+
+async function syncUser(user) {
+    User.findOne({where: { id: user.id}}).then((result) => {
+        if (result) {
+            result.login = user.login;
+            result.avatar = user.avatar_url;
+            result.displayName = user.name;
+            result.save().then(() => {
+                console.log('user ' + user.login + ' updated in database')
+            });
+        } else {
+            User.create({
+                id: user.id,
+                login: user.login,
+                avatar: user.avatar_url,
+                displayName: user.name
+            }).then(() => {
+                console.log('user ' + user.login + ' added to database')
+            });
+        }
     });
-    return data;
-};
+}
+
+async function fetchUser(token) {
+    const request = await fetch("https://api.github.com/user", {
+        headers: {
+            Authorization: "token " + token
+        }
+    });
+    return await request.json();
+}
 
 module.exports = {
     fetchUser,
-    getToken
+    getToken,
+    syncUser
 };
