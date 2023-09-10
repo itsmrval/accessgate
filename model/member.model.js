@@ -6,11 +6,9 @@ class Member extends Model {}
 Member.init({
     groupName: {
         type: DataTypes.STRING,
-        required: true,
     },
     userId: {
         type: DataTypes.INTEGER,
-        required: true,
     },
     role: {
         type: DataTypes.STRING,

@@ -22,22 +22,19 @@
                             <table class="table my-0" id="tableEnabled">
                                 <thead>
                                 <tr>
-                                    <th>Display name</th>
-                                    <th>github id</th>
+                                    <th>Username</th>
+                                    <th>id</th>
                                     <th>Admin</th>
-                                    <th>Groups</th>
                                     <th>Last login</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <% users.forEach(function (user) { %>
                                 <tr>
-                                    <td><img class="rounded-circle me-2" width="30" height="30" src="<%= user.avatar %>"><%= user.displayName %></td>
+                                    <td><img class="rounded-circle me-2" width="30" height="30" src="<%= user.avatar %>"><%= user.login %></td>
                                     <td><%= user.id %></td>
                                     <td><%= user.admin %></td>
-                                    <td>
-                                        <span class="badge bg-primary">admin</span>
-                                    </td>
+
                                     <td><%= user.updatedAt %></td>
                                 </tr>
                                 <% }) %>

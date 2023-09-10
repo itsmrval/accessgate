@@ -65,7 +65,6 @@ app.get("/login", (req, res) => {
 
 
 
-
 app.use('/admin/', require('./routes/admin.route'));
 app.use('/auth/', require('./routes/auth.route'));
 app.use('/keys/', require('./routes/keys.route'));

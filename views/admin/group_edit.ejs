@@ -25,15 +25,15 @@
                                     <table class="table my-0" id="tableEnabled">
                                         <thead>
                                         <tr>
-                                            <th>Display name</th>
-                                            <th>github id</th>
+                                            <th>Username</th>
+                                            <th>id</th>
                                             <th></th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <% outGroup.forEach(function (member) { %>
                                             <tr>
-                                                <td><img class="rounded-circle me-2" width="30" height="30" src="<%= member.avatar %>"><%= member.displayName %></td>
+                                                <td><img class="rounded-circle me-2" width="30" height="30" src="<%= member.avatar %>"><%= member.login %></td>
                                                 <td><%= member.id %></td>
                                                 <td style="text-align: right;"><a class="btn btn-sm btn-success" href="/admin/members/<%= group.name %>/add/<%= member.id %>"><i class="text-white fa fa-plus"></i></button></td>
                                             </tr>
@@ -44,7 +44,6 @@
                                         </tfoot>
                                     </table>
                                 </div>
-                                <div class="mb-3"><button class="btn btn-primary btn-sm" type="submit">Update group</button></div>
 
                             </div>
                             <div class="col-md-6">
@@ -64,15 +63,15 @@
                                     <table class="table my-0" id="tableEnabled">
                                         <thead>
                                         <tr>
-                                            <th>Display name</th>
-                                            <th>github id</th>
+                                            <th>username</th>
+                                            <th>id</th>
                                             <th></th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <% inGroup.forEach(function (member) { %>
                                         <tr>
-                                                <td><img class="rounded-circle me-2" width="30" height="30" src="<%= member.avatar %>"><%= member.displayName %></td>
+                                                <td><img class="rounded-circle me-2" width="30" height="30" src="<%= member.avatar %>"><%= member.login %></td>
                                                 <td><%= member.id %></td>
                                                 <td style="text-align: right;"><a class="btn btn-sm btn-danger" href="/admin/members/<%= group.name %>/delete/<%= member.id %>"><i class="far fa-trash-alt"></i></a></td>
 

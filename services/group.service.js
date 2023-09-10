@@ -1,5 +1,5 @@
 const Group = require('../model/group.model')
-const Members = require('../model/member.model')
+const Member = require('../model/member.model')
 const regexp = /^\S*$/;
 const User = require('../model/user.model')
 
@@ -28,6 +28,13 @@ async function delGroup(name) {
             result.destroy()
                 .then(() => {
                     console.log('group ' + result.name + ' added to database')
+                    Member.findAll({where: { groupName: name}}).then((members) => {
+                        for (x in members) {
+                            members[x].destroy().then(() => {
+                                console.log('member ' + members[x].userId + ' deleted from database')
+                            })
+                        }
+                    });
                 });
         } else {
             return false;
@@ -37,23 +44,39 @@ async function delGroup(name) {
     });
 }
 
-async function groupUserList(groupName) {
-    User.hasMany(Members);
-    Members.belongsTo(User);
-    const users = await User.findAll({ include: Members });
+async function userGroupList(userId) {
+    const members = await Member.findAll({where: { userId: userId}})
     var result = []
+    for (x in members) {
+        result[x] = (members[x].dataValues)
+    }
+    return result
+
+}
+
+async function groupUserList(groupName) {
+    User.hasMany(Member);
+    Member.belongsTo(User);
+    const users = await User.findAll({ include: Member });
+    var result = []
+    console.log(users)
     for (x in users) {
         try {
-            if (users[x].dataValues.members[0].dataValues.groupName === groupName) {
-                result[x] = (users[x].dataValues)
+            for (y in users[x].dataValues.members) {
+                if (users[x].dataValues.members[y].dataValues.groupName === groupName) {
+                    result[x] = (users[x].dataValues)
+                }
             }
+
         } catch (error) {
     }}
+    console.log(result)
     return result
 };
 
 module.exports = {
     addGroup,
     delGroup,
-    groupUserList
+    groupUserList,
+    userGroupList
 };
