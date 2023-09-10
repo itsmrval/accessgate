@@ -1,0 +1,22 @@
+<%- include('../navbar', {active: "admin-groups"}); %>
+            <div class="container-fluid">
+                <h3 class="text-dark mb-4">New group: </h3>
+                <div class="card shadow mb-5">
+                    <div class="card-header py-3">
+                        <p class="text-primary m-0 fw-bold">Group editing</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <form method="POST" action="/admin/groups/add/">
+                                    <div class="mb-3"><label class="form-label"><strong>Name</strong></label><input class="form-control" type="text" name="group_name"></div>
+                                    <div class="mb-3"><button class="btn btn-primary btn-sm" type="submit">Create group</button></div>
+                                </form>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+            <%- include('../footer'); %>

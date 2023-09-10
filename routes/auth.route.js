@@ -1,5 +1,4 @@
 const express = require('express');
-const {default: axios} = require("axios");
 const authService = require("../services/auth.service");
 
 var router = express.Router();
@@ -18,6 +17,7 @@ router.get("/callback", async (req, res) => {
         req.session.access_token = access_token;
         req.session.user = user;
         req.session.loggedin = true;
+        req.session.admin = user.admin;
         res.redirect("/");
     } else {
         res.send("An error occured");

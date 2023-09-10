@@ -1,0 +1,51 @@
+<%- include('../navbar', {active: "admin-groups"}); %>
+
+<div class="container-fluid">
+    <h3 class="text-dark mb-4">Admin: Groups</h3>
+    <div class="card shadow">
+        <div class="card-header py-3">
+            <p class="text-primary m-0 fw-bold">User list</p>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6 text-nowrap">
+                    <div id="dataTable_length" class="dataTables_length" aria-controls="dataTable"><a class="btn btn-primary" href="/admin/groups/new" data-toggle="modal" >New group</a></div>
+                </div>
+                <div class="col-md-6">
+                    <div class="text-md-end dataTables_filter" id="dataTable_filter"><label class="form-label"><input type="search" class="form-control form-control-sm" aria-controls="dataTable" placeholder="Search"></label></div>
+                </div>
+            </div>
+            <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
+                <table class="table my-0" id="dataTable">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Member count</th>
+                        <th>Server count</th>
+                        <th style="text-align: right;">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <% groups.forEach(function (group) { %>
+                        <tr>
+                            <td><%= group.name %></td>
+                            <td>undefined</td>
+                            <td>undefined</td>
+                            <td style="text-align: right;"><a class="btn btn-sm btn-primary" href="/admin/groups/<%= group.name %>"><i class="far fa-edit"></i></a> <a class="btn btn-sm btn-danger" href="/admin/groups/delete/<%= group.name %>"><i class="far fa-trash-alt"></i></a></td>
+                        </tr>
+                    <% }) %>
+
+                    </tbody>
+                    <tfoot>
+                    <tr></tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+
+
+<%- include('../footer'); %>

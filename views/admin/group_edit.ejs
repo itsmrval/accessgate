@@ -1,0 +1,94 @@
+<%- include('../navbar', {active: "admin-groups"}); %>
+            <div class="container-fluid">
+                <h3 class="text-dark mb-4"><%= group.name %></h3>
+                <div class="card shadow mb-5">
+                    <div class="card-header py-3">
+                        <p class="text-primary m-0 fw-bold">Group editing</p>
+                    </div>
+                    <form method="POST" action="/keys/add/">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-6 text-nowrap">
+                                        <div id="dataTable_length" class="dataTables_length" aria-controls="dataTable"><label class="form-label">Show&nbsp;<select class="d-inline-block form-select form-select-sm">
+                                                    <option value="all" selected="">all</option>
+                                                </select>&nbsp;</label></div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="text-md-end dataTables_filter" id="dataTable_filter"><label class="form-label">
+                                                <input type="search" class="form-control form-control-sm" id="tableInput" onkeyup="tableSearch()" aria-controls="dataTable" placeholder="Search"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
+                                    <table class="table my-0" id="tableEnabled">
+                                        <thead>
+                                        <tr>
+                                            <th>Display name</th>
+                                            <th>github id</th>
+                                            <th></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <% outGroup.forEach(function (member) { %>
+                                            <tr>
+                                                <td><img class="rounded-circle me-2" width="30" height="30" src="<%= member.avatar %>"><%= member.displayName %></td>
+                                                <td><%= member.id %></td>
+                                                <td style="text-align: right;"><a class="btn btn-sm btn-success" href="/admin/members/<%= group.name %>/add/<%= member.id %>"><i class="text-white fa fa-plus"></i></button></td>
+                                            </tr>
+                                        <% }) %>
+                                        </tbody>
+                                        <tfoot>
+                                        <tr></tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                                <div class="mb-3"><button class="btn btn-primary btn-sm" type="submit">Update group</button></div>
+
+                            </div>
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-6 text-nowrap">
+                                        <div id="dataTable_length" class="dataTables_length" aria-controls="dataTable"><label class="form-label">Show&nbsp;<select class="d-inline-block form-select form-select-sm">
+                                                    <option value="all" selected="">all</option>
+                                                </select>&nbsp;</label></div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="text-md-end dataTables_filter" id="dataTable_filter"><label class="form-label">
+                                                <input type="search" class="form-control form-control-sm" id="tableInput" onkeyup="tableSearch()" aria-controls="dataTable" placeholder="Search"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
+                                    <table class="table my-0" id="tableEnabled">
+                                        <thead>
+                                        <tr>
+                                            <th>Display name</th>
+                                            <th>github id</th>
+                                            <th></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <% inGroup.forEach(function (member) { %>
+                                        <tr>
+                                                <td><img class="rounded-circle me-2" width="30" height="30" src="<%= member.avatar %>"><%= member.displayName %></td>
+                                                <td><%= member.id %></td>
+                                                <td style="text-align: right;"><a class="btn btn-sm btn-danger" href="/admin/members/<%= group.name %>/delete/<%= member.id %>"><i class="far fa-trash-alt"></i></a></td>
+
+                                        </tr>
+                                        <% }) %>
+                                        </tbody>
+                                        <tfoot>
+                                        <tr></tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                </div>
+            </div>
+        </div>
+            <%- include('../footer'); %>
