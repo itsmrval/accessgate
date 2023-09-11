@@ -23,9 +23,13 @@ router.get("/",async (req, res) => {
 
 router.get("/delete/:userId", (req, res) => {
     try {
-        userService.delUser(req.params.userId).then((result) => {
+        if (req.params.userId != req.session.user.id) {
+            userService.delUser(req.params.userId).then((result) => {
+                res.redirect("/admin/users")
+            })
+        } else {
             res.redirect("/admin/users")
-        })
+        }
     } catch(e) {
         console.log(e)
     }

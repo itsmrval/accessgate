@@ -72,9 +72,28 @@ async function getServerKeys(server) {
     return result
 }
 
+async function getServerListForUserId(userId) {
+    const dump = await sequelize.query('SELECT hostname, username, ip, lastPull FROM servers JOIN accesses ON servers.hostname = accesses.serverHostname JOIN members ON members.groupName = accesses.groupName WHERE userId  = \'' + userId + '\'', {});
+    result = {}
+    for (x in dump[0]) {
+        if (dump[0][x].hostname) {
+            if (!dump[0][x].lastPull) {
+                dump[0][x].lastPull = ' never'
+            }
+            result[(dump[0][x].hostname).toString()] = {
+                'username': dump[0][x].username,
+                'ip': dump[0][x].ip,
+                'lastPull': dump[0][x].lastPull
+            }
+        }
+    }
+    return result
+}
+
 module.exports = {
     addServer,
     delServer,
-    getServerKeys
+    getServerKeys,
+    getServerListForUserId
 
 };

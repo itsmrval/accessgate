@@ -6,10 +6,16 @@ var router = express.Router();
 router.use('*', (req, res, next) => {
     if (req.session.loggedin === true) {
         User.findOne({ where: { id: req.session.user.id } }).then((result) => {
-            if (result.admin === true) {
-                next()
-            } else {
+            try {
+                if (result.admin === true) {
+                    next()
+                } else {
+                    res.redirect('/')
+                }
+            } catch (e) {
+                console.log(e)
                 res.redirect('/')
+
             }
         })
     } else {
