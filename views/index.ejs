@@ -34,28 +34,41 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-md-6 col-xl-3 mb-4">
+                            <div class="card shadow border-start-info py-2">
+                                <div class="card-body">
+                                    <div class="row align-items-center no-gutters">
+                                        <div class="col me-2">
+                                            <div class="text-uppercase text-warning fw-bold text-xs mb-1"><span>my servers</span></div>
+                                            <div class="row g-0 align-items-center">
+                                                <div class="col-auto">
+                                                    <div class="text-dark fw-bold h5 mb-0 me-3"><span><%= Object.keys(servers).length %></span></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-auto"><i class="fas fa-hdd fa-2x text-gray-300"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
                             <h6 class="text-primary fw-bold m-0">Server list</h6>
                         </div>
                         <ul class="list-group list-group-flush">
-                            <li class="list-group-item">
-                                <div class="row align-items-center no-gutters">
-                                    <div class="col me-2">
-                                        <h6 class="mb-0"><strong>pve-iut.local</strong></h6><span class="text-xs">Granted 10 september 2023</span>
+                            <% for (x in servers) { %>
+                                <li class="list-group-item">
+                                    <div class="row align-items-center no-gutters">
+                                        <div class="col me-2">
+                                            <h6 class="mb-0 text-primary"><strong><%= x %></strong></h6><span class="text-xs"><i class="fas fa-clock"> </i> <b>Last pull:</b> <%= servers[x].lastPull %></span>
+                                        </div>
+                                        <div class="col-auto"><code><%= servers[x].username %>@<%= servers[x].ip %></code></div>
                                     </div>
-                                    <div class="col-auto"><code>root@172.17.0.1</code></div>
-                                </div>
-                            </li>
-                            <li class="list-group-item">
-                                <div class="row align-items-center no-gutters">
-                                    <div class="col me-2">
-                                        <h6 class="mb-0"><strong>vscode.pve-iut.local</strong></h6><span class="text-xs">Granted 10 september 2023</span>
-                                    </div>
-                                    <div class="col-auto"><code>root@172.17.0.2</code></div>
-                                </div>
-                            </li>
+                                </li>
+                            <% } %>
+
+
                         </ul>
                     </div>
                 </div>

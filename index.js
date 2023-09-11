@@ -7,6 +7,7 @@ const databaseService = require('./services/database.service');
 require('dotenv').config()
 
 userService = require("./services/users.service");
+serverService = require("./services/server.service");
 
 const User = require('./model/user.model')
 const Key = require('./model/key.model')
@@ -59,8 +60,9 @@ app.get("/", (req, res) => {
                 stats["keys"] = result
                 Member.count({ where: { userId: req.session.user.id } }).then((result) => {
                     stats["groups"] = result
-
-                    res.render('index', { user: req.session.user, stats: stats })
+                    serverService.getServerListForUserId(req.session.user.id).then((servers) => {
+                        res.render('index', { user: req.session.user, stats: stats, servers: servers })
+                    })
                 })
             })
 
