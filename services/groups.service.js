@@ -3,6 +3,7 @@ const Member = require('../model/member.model')
 const User = require('../model/user.model')
 const Server = require('../model/server.model')
 const Access = require('../model/access.model')
+const sequelize = require("./database.service");
 
 const regexp_space = /^\S*$/;
 
@@ -62,50 +63,58 @@ async function getGroupsWithMembers() {
     return count
 }
 
+async function getGroupsWithServers() {
+    Group.hasMany(Access);
+    Access.belongsTo(Group);
+    const count = await Group.findAll({ include: Access });
+    return count
+}
+
+
 
 
 async function groupUserList(groupName) {
-    User.hasMany(Member);
-    Member.belongsTo(User);
-    const users = await User.findAll({ include: Member });
-    var result = []
-    for (x in users) {
-        try {
-            for (y in users[x].dataValues.members) {
-                if (users[x].dataValues.members[y].dataValues.groupName === groupName) {
-                    result[x] = (users[x].dataValues)
-                }
+    const dump = await sequelize.query('SELECT * FROM users JOIN members ON users.id = members.userId WHERE groupName = \'' + groupName + '\'', {});
+    result = {}
+    for (x in dump[0]) {
+        if (dump[0][x].userId) {
+            result[(dump[0][x].userId).toString()] = {
+                'id': dump[0][x].userId,
+                'login': dump[0][x].login,
+                'avatar': dump[0][x].avatar
             }
-
-        } catch (error) {
-    }}
+        }
+    }
     return result
-};
-
+}
 
 async function groupServerList(groupName) {
-    Server.hasMany(Access);
-    Access.belongsTo(Server);
-    const servers = await Server.findAll({ include: Access });
-    var result = []
-    for (x in servers) {
-        try {
-            for (y in servers[x].dataValues.accesses) {
-                if (servers[x].dataValues.accesses[y].dataValues.groupName === groupName) {
-                    result[x] = (servers[x].dataValues)
-                }
+    const dump = await sequelize.query('SELECT hostname, ip, username, lastPull FROM servers JOIN accesses ON servers.hostname = accesses.serverHostname WHERE groupName = \'' + groupName + '\'', {});
+    result = {}
+    for (x in dump[0]) {
+        if (dump[0][x].hostname) {
+            if (!dump[0][x].lastPull) {
+                dump[0][x].lastPull = ' never'
             }
-
-        } catch (error) {
-        }}
+            result[(dump[0][x].hostname).toString()] = {
+                'username': dump[0][x].username,
+                'ip': dump[0][x].ip,
+                'lastPull': dump[0][x].lastPull
+            }
+        }
+    }
     return result
-};
+}
+
+
+groupServerList('admin')
 
 module.exports = {
     addGroup,
     delGroup,
     groupUserList,
     getGroupsWithMembers,
-    groupServerList
+    groupServerList,
+    getGroupsWithServers
 
 };

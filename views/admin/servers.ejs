@@ -38,7 +38,8 @@
                             <td><%= server.hostname %></td>
                             <td><%= server.ip %></td>
                             <td><%= server.username %></td>
-                            <td><%= server.lastPull %></td>
+
+                            <td><%= server.lastPull %> <% if (!server.lastPull) { %>never<% } %></td>
                             <td style="text-align: right;"> <a class="btn btn-sm btn-danger" href="/admin/servers/delete/<%= server.hostname %>"><i class="far fa-trash-alt"></i></a></td>
                         </tr>
                     <% }) %>

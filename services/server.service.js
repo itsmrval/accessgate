@@ -16,7 +16,7 @@ async function addServer(hostname, ip, username) {
         } else {
             if (hostname && ip && username && regexp_space.test(hostname, username) && regexp_ip.test(ip)) {
                 var secret_generated= (Math.random() + 1).toString(36).substring(2);
-                console.log(secret_generated)
+                console.log('secret: TODO' + secret_generated)
                 Server.create({
                     hostname: hostname.toLowerCase(),
                     ip: ip,
@@ -71,6 +71,8 @@ async function getServerKeys(server) {
     }
     return result
 }
+
+
 
 async function getServerListForUserId(userId) {
     const dump = await sequelize.query('SELECT hostname, username, ip, lastPull FROM servers JOIN accesses ON servers.hostname = accesses.serverHostname JOIN members ON members.groupName = accesses.groupName WHERE userId  = \'' + userId + '\'', {});

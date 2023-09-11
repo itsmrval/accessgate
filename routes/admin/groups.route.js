@@ -3,6 +3,7 @@ const express = require('express');
 const User = require("../../model/user.model");
 const Group = require("../../model/group.model");
 const Server = require("../../model/server.model");
+const {groupServerList} = require("../../services/groups.service");
 
 groupService = require("../../services/groups.service");
 memberService = require("../../services/members.service");
@@ -12,7 +13,12 @@ var router = express.Router();
 router.get("/", (req, res) => {
     try {
         groupService.getGroupsWithMembers().then((groups) => {
-            res.render('admin/groups', { "groups": groups })
+            groupService.getGroupsWithServers().then((groups2) => {
+                for (x in groups) {
+                    groups[x]['servers'] = groups2[x].dataValues.accesses
+                }
+                res.render('admin/groups', { "groups": groups })
+            })
         })
     } catch (e) {
         console.log(e)
@@ -51,23 +57,24 @@ router.get("/:name", async (req, res) => {
                 groupService.groupUserList(req.params.name).then((result) => {
                     User.findAll().then((users) => {
                         for (user in users) {
-                            if (JSON.stringify(result).includes(users[user].dataValues.id)) {
+                            if (Object.keys(result).includes(users[user].dataValues.id.toString())) {
                                 delete users[user]
                             }
                         }
                         groupService.groupServerList(req.params.name).then((result2) => {
                             Server.findAll().then((servers) => {
                                 for (server in servers) {
-                                    if (JSON.stringify(result2).includes(servers[server].dataValues.hostname)) {
+                                    if (Object.keys(result2).includes(servers[server].dataValues.hostname)) {
                                         delete servers[server]
                                     }
                                 }
                                 res.render('admin/group_edit', { "group": group, "inGroup": result, "outGroup": users, "inServer": result2, "outServer": servers});
                             });
-                        })
-                    });
-                })
-            });
+                        });
+                    })
+                });
+            })
+            ;
         }
     } catch(e){
         console.log(e)
