@@ -10,7 +10,7 @@ async function addGroup(name) {
         } else {
             if (name && regexp.test(name)) {
                 Group.create({
-                    name: name,
+                    name: name.toLowerCase(),
                 }).then((result) => {
                     console.log('Group ' + result.name + ' added to database')
                 });
@@ -21,6 +21,8 @@ async function addGroup(name) {
         }
     });
 }
+
+
 
 async function delGroup(name) {
     Group.findOne({where: { name: name}}).then((result) => {

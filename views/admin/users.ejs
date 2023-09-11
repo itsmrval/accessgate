@@ -1,6 +1,6 @@
 <%- include('../navbar', {active: "admin-users"}); %>
             <div class="container-fluid">
-                <h3 class="text-dark mb-4">Admin: Users</h3>
+                <h3 class="text-dark mb-4">Users</h3>
                 <div class="card shadow">
                     <div class="card-header py-3">
                         <p class="text-primary m-0 fw-bold">User list</p>
@@ -22,10 +22,11 @@
                             <table class="table my-0" id="tableEnabled">
                                 <thead>
                                 <tr>
-                                    <th>Username</th>
+                                    <th>username</th>
                                     <th>id</th>
-                                    <th>Admin</th>
-                                    <th>Last login</th>
+                                    <th>admin</th>
+                                    <th>updated</th>
+                                    <th></th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -34,8 +35,9 @@
                                     <td><img class="rounded-circle me-2" width="30" height="30" src="<%= user.avatar %>"><%= user.login %></td>
                                     <td><%= user.id %></td>
                                     <td><%= user.admin %></td>
-
                                     <td><%= user.updatedAt %></td>
+                                    <td style="text-align: right;"><a class="btn btn-sm btn-primary" href="/admin/users/<%= user.id %>"><i class="fas fa-key"></i></a> <a class="btn btn-sm btn-danger" href="/admin/users/delete/<%= user.id %>"><i class="far fa-trash-alt"></i></a></td>
+
                                 </tr>
                                 <% }) %>
                                 </tbody>

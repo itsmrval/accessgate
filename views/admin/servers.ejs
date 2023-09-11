@@ -1,15 +1,15 @@
-<%- include('../navbar', {active: "admin-groups"}); %>
+<%- include('../navbar', {active: "admin-servers"}); %>
 
 <div class="container-fluid">
-    <h3 class="text-dark mb-4">Groups</h3>
+    <h3 class="text-dark mb-4">Servers</h3>
     <div class="card shadow">
         <div class="card-header py-3">
-            <p class="text-primary m-0 fw-bold">Group list</p>
+            <p class="text-primary m-0 fw-bold">Server list</p>
         </div>
         <div class="card-body">
             <div class="row">
                 <div class="col-md-6 text-nowrap">
-                    <div id="dataTable_length" class="dataTables_length" aria-controls="dataTable"><a class="btn btn-primary" href="/admin/groups/new" data-toggle="modal" >New group</a></div>
+                    <div id="dataTable_length" class="dataTables_length" aria-controls="dataTable"><a class="btn btn-primary" href="/admin/servers/new" data-toggle="modal" >New server</a></div>
                 </div>
                 <div class="col-md-6">
                     <div class="text-md-end dataTables_filter" id="dataTable_filter"><label class="form-label"><input type="search" class="form-control form-control-sm" aria-controls="dataTable" placeholder="Search"></label></div>
@@ -19,19 +19,21 @@
                 <table class="table my-0" id="dataTable">
                     <thead>
                     <tr>
-                        <th>Name</th>
-                        <th>Member count</th>
-                        <th>Server count</th>
+                        <th>Hostname</th>
+                        <th>IP</th>
+                        <th>User</th>
+                        <th>Last pull</th>
                         <th></th>
                     </tr>
                     </thead>
                     <tbody>
-                    <% groups.forEach(function (group) { %>
+                    <% servers.forEach(function (server) { %>
                         <tr>
-                            <td><a style="text-decoration: none" href="/admin/groups/<%= group.name %>"><%= group.name %></a></td>
-                            <td><%= group.members.length %></td>
-                            <td>undefined</td>
-                            <td style="text-align: right;"><a class="btn btn-sm btn-primary" href="/admin/groups/<%= group.name %>"><i class="far fa-edit"></i></a> <a class="btn btn-sm btn-danger" href="/admin/groups/delete/<%= group.name %>"><i class="far fa-trash-alt"></i></a></td>
+                            <td><%= server.hostname %></td>
+                            <td><%= server.ip %></td>
+                            <td><%= server.username %></td>
+                            <td><%= server.lastPull %></td>
+                            <td style="text-align: right;"> <a class="btn btn-sm btn-danger" href="/admin/servers/delete/<%= server.hostname %>"><i class="far fa-trash-alt"></i></a></td>
                         </tr>
                     <% }) %>
 

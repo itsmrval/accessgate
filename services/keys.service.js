@@ -3,19 +3,17 @@ const Key = require('../model/key.model')
 const regexp = /^\S*$/;
 
 async function addKey(content, name, idOwner) {
-    const id_key = idOwner.toString() + name;
-    Key.findOne({where: { idKey: id_key}}).then((result) => {
+    Key.findOne({where: { idOwner: idOwner, name: name}}).then((result) => {
         if (result) {
            return false;
         } else {
             if (content && name && idOwner && regexp.test(name, idOwner, content)) {
                 Key.create({
-                    idKey: id_key,
                     idOwner: idOwner,
                     content: content,
-                    name: name,
+                    name: name.toLowerCase(),
                 }).then((key) => {
-                    console.log('key ' + key.idKey + ' added to database')
+                    console.log('key for ' + key.idOwner + ' added to database')
                 });
             } else {
                 return false;
@@ -25,17 +23,13 @@ async function addKey(content, name, idOwner) {
     });
 }
 
-async function delKey(id, idOwner) {
-    Key.findOne({where: { idKey: id}}).then((result) => {
-        if (result && regexp.test(id,idOwner)) {
-            if (result.idOwner !== idOwner) {
-                return false;
-            } else {
-                result.destroy()
-                    .then(() => {
-                        console.log('key ' + result.idKey + ' added to database')
-                    });
-            }
+async function delKey(name, idOwner) {
+    Key.findOne({where: { name: name, idOwner: idOwner}}).then((result) => {
+        if (result && regexp.test(name, idOwner)) {
+            result.destroy()
+                .then(() => {
+                    console.log('key for ' + result.idOwner + ' deleted from database')
+                });
         } else {
             return false;
 

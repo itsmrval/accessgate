@@ -1,24 +1,27 @@
 const { Model, DataTypes} = require('sequelize');
 const sequelize = require('../services/database.service');
 
-class Key extends Model {}
+class Server extends Model {}
 
-Key.init({
-    idOwner: {
-        type: DataTypes.INTEGER,
-        required: true,
-    },
-    content: {
+Server.init({
+    hostname: {
         type: DataTypes.STRING,
         required: true,
     },
-    name: {
+    ip: {
         type: DataTypes.STRING,
         required: true,
     },
+    username: {
+        type: DataTypes.STRING,
+        required: true,
+    },
+    lastPull: {
+        type: DataTypes.DATE
+    }
 }, {
     sequelize,
-    modelName: 'key'
+    modelName: 'server'
 })
 
-module.exports = Key;
+module.exports = Server;

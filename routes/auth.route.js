@@ -10,17 +10,21 @@ router.get("/login", (req, res) => {
 
 
 router.get("/callback", async (req, res) => {
-    const access_token = await authService.getToken(req.query.code);
-    const user = await authService.fetchUser(access_token);
-    if (user) {
-        await authService.syncUser(user);
-        req.session.access_token = access_token;
-        req.session.user = user;
-        req.session.loggedin = true;
-        req.session.admin = user.admin;
-        res.redirect("/");
-    } else {
-        res.send("An error occured");
+    try {
+        const access_token = await authService.getToken(req.query.code);
+        const user = await authService.fetchUser(access_token);
+        if (user) {
+            await authService.syncUser(user);
+            req.session.access_token = access_token;
+            req.session.user = user;
+            req.session.loggedin = true;
+            req.session.admin = user.admin;
+            res.redirect("/");
+        } else {
+            res.send("An error occured");
+        }
+    } catch (e) {
+        console.log(e)
     }
 });
 

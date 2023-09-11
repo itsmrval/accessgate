@@ -13,28 +13,40 @@ router.get('*', (req, res, next) => {
 });
 
 router.post("/add", (req, res) => {
-    if (req.body.key_content && req.body.key_name) {
-        keyService.addKey(req.body.key_content, req.body.key_name, req.session.user.id).then((result) => {
+    try {
+        if (req.body.key_content && req.body.key_name) {
+            keyService.addKey(req.body.key_content, req.body.key_name, req.session.user.id).then((result) => {
+                res.redirect("/keys")
+            })
+        } else {
             res.redirect("/keys")
-        })
-    } else {
-        res.redirect("/keys")
+        }
+    } catch (e) {
+        console.log(e)
     }
 
 })
 
 router.get("/delete/:key", (req, res) => {
-    keyService.delKey(req.params.key, req.session.user.id).then((result) => {
-        res.redirect("/keys")
-    })
+    try {
+        keyService.delKey(req.params.key, req.session.user.id).then((result) => {
+            res.redirect("/keys")
+        })
+    } catch(e) {
+        console.log(e)
+    }
 
 });
 
 
 router.get("/", (req, res) => {
-    Key.findAll({where: {idOwner: req.session.user.id}}).then((keys) => {
-        res.render('keys', { "keys": keys })
-    })
+    try {
+        Key.findAll({where: {idOwner: req.session.user.id}}).then((keys) => {
+            res.render('keys', { "keys": keys })
+        })
+    } catch(e) {
+        console.log(e)
+    }
 });
 
 module.exports = router;
