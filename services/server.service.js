@@ -72,8 +72,6 @@ async function getServerKeys(server) {
     return result
 }
 
-
-
 async function getServerListForUserId(userId) {
     const dump = await sequelize.query('SELECT hostname, username, ip, lastPull FROM servers JOIN accesses ON servers.hostname = accesses.serverHostname JOIN members ON members.groupName = accesses.groupName WHERE userId  = \'' + userId + '\'', {});
     result = {}
@@ -97,5 +95,4 @@ module.exports = {
     delServer,
     getServerKeys,
     getServerListForUserId
-
 };
