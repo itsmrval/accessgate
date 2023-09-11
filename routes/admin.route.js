@@ -6,7 +6,7 @@ const Member = require("../model/member.model");
 memberService = require("../services/members.service");
 var router = express.Router();
 
-router.use('*aaaa', (req, res, next) => {
+router.use('*', (req, res, next) => {
     if (req.session.loggedin === true) {
         User.findOne({ where: { id: req.session.user.id } }).then((result) => {
             if (result.admin === true) {
