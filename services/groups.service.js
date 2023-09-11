@@ -101,11 +101,6 @@ async function groupServerList(groupName) {
     return result
 };
 
-groupServerList('group1').then(
-    (result) => {
-        console.log(result)
-    }
-)
 module.exports = {
     addGroup,
     delGroup,

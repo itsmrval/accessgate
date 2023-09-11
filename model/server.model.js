@@ -20,6 +20,10 @@ Server.init({
     },
     lastPull: {
         type: DataTypes.DATE
+    },
+    secret: {
+        type: DataTypes.STRING,
+        required: true,
     }
 }, {
     sequelize,

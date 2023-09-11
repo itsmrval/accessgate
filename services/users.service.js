@@ -3,12 +3,8 @@ const User = require('../model/user.model')
 const regexp_space = /^\S*$/;
 
 
-async function userList(code) {
-    return await User.findAll()
-}
-
-function makeAdmin(userId) {
-    User.findOne({ where: { id: userId } }).then((result) => {
+function makeAdmin(login) {
+    User.findOne({ where: { login: login } }).then((result) => {
         if (result) {
             result.admin = true;
             result.save().then(() => {

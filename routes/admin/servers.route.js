@@ -1,17 +1,22 @@
 const express = require('express');
-
+const User = require("../../model/user.model");
+const Group = require("../../model/group.model");
 const Server = require("../../model/server.model");
+const url = require('url');
 
 memberService = require("../../services/members.service");
 serverService = require("../../services/server.service");
-
 var router = express.Router();
 
 
 router.get("/", (req, res) => {
     try {
         Server.findAll().then((servers) => {
-            res.render('admin/servers', { "servers": servers })
+            if (req.query.alert) {
+                res.render('admin/servers', { "servers": servers, locals: { alert: req.query.alert, alert_type: req.query.type} })
+            } else {
+                res.render('admin/servers', { "servers": servers })
+            }
         });
     } catch (e) {
         console.log(e)
@@ -27,7 +32,13 @@ router.post("/add", (req, res) => {
                 res.redirect("/admin/servers")
             })
         } else {
-            res.redirect("/admin/servers")
+            res.redirect(url.format({
+                pathname:'/admin/servers',
+                query: {
+                    "alert": "Please check the value of your fields or if the server does not already exist.",
+                    "type": "danger"
+                }
+            }));
         }
     } catch (e) {
         console.log(e)
