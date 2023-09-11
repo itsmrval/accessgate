@@ -6,7 +6,7 @@ const Member = require("../model/member.model");
 memberService = require("../services/members.service");
 var router = express.Router();
 
-router.use('*', (req, res, next) => {
+router.use('*aaaa', (req, res, next) => {
     if (req.session.loggedin === true) {
         User.findOne({ where: { id: req.session.user.id } }).then((result) => {
             if (result.admin === true) {
@@ -29,10 +29,14 @@ router.get("/users",async (req, res) => {
 })
 
 router.get("/groups", (req, res) => {
-    Group.findAll().then((groups) => {
+    groupService.getGroupsWithMembers().then((groups) => {
         res.render('admin/groups', { "groups": groups })
     })
+
+
 })
+
+
 
 router.post("/groups/add", (req, res) => {
     if (req.body.group_name) {
@@ -66,12 +70,9 @@ router.get("/groups/:name", async (req, res) => {
                         }
                     }
                     res.render('admin/group_edit', { "group": group, "inGroup": result, "outGroup": users })
-
                 });
-
             })
         });
-
     }
 })
 

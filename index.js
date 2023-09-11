@@ -10,6 +10,8 @@ const groupService = require("./services/group.service");
 const User = require('./model/user.model')
 const Key = require('./model/key.model')
 const {makeAdmin} = require("./services/users.service");
+const Member = require("./model/member.model");
+const Group = require("./model/group.model");
 
 databaseService.sync().then(() => {
     console.log("Database ready");
@@ -59,7 +61,6 @@ app.get("/", (req, res) => {
 app.get("/login", (req, res) => {
     res.render('login')
 });
-
 
 
 

@@ -38,20 +38,15 @@ async function delGroup(name) {
                 });
         } else {
             return false;
-
-
         }
     });
 }
 
-async function userGroupList(userId) {
-    const members = await Member.findAll({where: { userId: userId}})
-    var result = []
-    for (x in members) {
-        result[x] = (members[x].dataValues)
-    }
-    return result
-
+async function getGroupsWithMembers() {
+    Group.hasMany(Member);
+    Member.belongsTo(Group);
+    const count = await Group.findAll({ include: Member });
+    return count
 }
 
 async function groupUserList(groupName) {
@@ -59,7 +54,6 @@ async function groupUserList(groupName) {
     Member.belongsTo(User);
     const users = await User.findAll({ include: Member });
     var result = []
-    console.log(users)
     for (x in users) {
         try {
             for (y in users[x].dataValues.members) {
@@ -70,7 +64,6 @@ async function groupUserList(groupName) {
 
         } catch (error) {
     }}
-    console.log(result)
     return result
 };
 
@@ -78,5 +71,6 @@ module.exports = {
     addGroup,
     delGroup,
     groupUserList,
-    userGroupList
+    getGroupsWithMembers
+
 };

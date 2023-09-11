@@ -29,7 +29,7 @@
                     <% groups.forEach(function (group) { %>
                         <tr>
                             <td><%= group.name %></td>
-                            <td>undefined</td>
+                            <td><%= group.members.length %></td>
                             <td>undefined</td>
                             <td style="text-align: right;"><a class="btn btn-sm btn-primary" href="/admin/groups/<%= group.name %>"><i class="far fa-edit"></i></a> <a class="btn btn-sm btn-danger" href="/admin/groups/delete/<%= group.name %>"><i class="far fa-trash-alt"></i></a></td>
                         </tr>

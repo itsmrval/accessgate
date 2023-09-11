@@ -15,7 +15,6 @@ function makeAdmin(userId) {
     });
 }
 
-
 module.exports = {
     makeAdmin
 };
