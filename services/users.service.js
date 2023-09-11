@@ -1,7 +1,6 @@
 const User = require('../model/user.model')
-const Key = require("../model/key.model");
 
-const regexp = /^\S*$/;
+const regexp_space = /^\S*$/;
 
 
 async function userList(code) {
@@ -22,7 +21,7 @@ function makeAdmin(userId) {
 async function delUser(id) {
     User.findOne({where: { id: id}}).then((result) => {
 
-        if (result && regexp.test(id)) {
+        if (result && regexp_space.test(id)) {
             result.destroy()
                 .then(() => {
                     console.log('user ' + id + ' deleted from database')

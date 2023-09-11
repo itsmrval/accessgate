@@ -1,19 +1,19 @@
-const { default: axios } = require("axios");
-const express = require("express");
-const app = express();
 const session = require('express-session');
-const databaseService = require('./services/database.service');
 const bodyParser = require('body-parser');
+const express = require("express");
+
+const databaseService = require('./services/database.service');
+
+require('dotenv').config()
 
 userService = require("./services/users.service");
 
-const groupService = require("./services/group.service");
-
 const User = require('./model/user.model')
 const Key = require('./model/key.model')
-const {makeAdmin} = require("./services/users.service");
 const Member = require("./model/member.model");
-const Group = require("./model/group.model");
+
+const app = express();
+
 
 databaseService.sync().then(() => {
     console.log("Database ready");
@@ -76,10 +76,6 @@ app.get("/login", (req, res) => {
     res.render('login')
 });
 
-try {
-    userService.makeAdmin(43043885)
-} catch (e) {
-}
 
 app.use('/admin/', require('./routes/admin.route'));
 app.use('/auth/', require('./routes/auth.route'));

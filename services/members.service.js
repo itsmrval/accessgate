@@ -2,8 +2,6 @@ const Member = require('../model/member.model')
 const Group = require("../model/group.model");
 const User = require("../model/user.model");
 
-const regexp = /^\S*$/;
-
 async function addMember(userId, groupName) {
     Group.findOne({ where: { name: groupName} }).then((result) => {
         if (result) {

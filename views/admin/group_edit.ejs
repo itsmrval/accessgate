@@ -3,9 +3,82 @@
                 <h3 class="text-dark mb-4"><a style="text-decoration: none" href="/admin/groups">Groups</a> / <%= group.name %></h3>
                 <div class="card shadow mb-5">
                     <div class="card-header py-3">
-                        <p class="text-primary m-0 fw-bold">Group editing</p>
+                        <p class="text-primary m-0 fw-bold">User access</p>
                     </div>
-                    <form method="POST" action="/keys/add/">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-6 text-nowrap">
+                                            <div id="dataTable_length" class="dataTables_length" aria-controls="dataTable"><label class="form-label">Show&nbsp;<select class="d-inline-block form-select form-select-sm">
+                                                        <option value="all" selected="">all</option>
+                                                    </select>&nbsp;</label></div>
+                                        </div>
+
+                                    </div>
+                                    <div class="table-responsive table mt-2" id="dataTable1" role="grid" aria-describedby="dataTable_info">
+                                        <table class="table my-0" id="tableEnabled1">
+                                            <thead>
+                                            <tr>
+                                                <th>Username</th>
+                                                <th>id</th>
+                                                <th></th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <% outGroup.forEach(function (member) { %>
+                                                <tr>
+                                                    <td><img class="rounded-circle me-2" width="30" height="30" src="<%= member.avatar %>"><%= member.login %></td>
+                                                    <td><%= member.id %></td>
+                                                    <td style="text-align: right;"><a class="btn btn-sm btn-success" href="/admin/members/<%= group.name %>/add/<%= member.id %>"><i class="text-white fa fa-plus"></i></button></td>
+                                                </tr>
+                                            <% }) %>
+                                            </tbody>
+                                            <tfoot>
+                                            <tr></tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+
+                                </div>
+                                <div class="col-md-6" >
+                                    <div class="row" >
+                                        <div class="text-md-end dataTables_filter" id="dataTable_filter"><label class="form-label">
+                                                <input type="search" class="form-control form-control-sm" id="tableInput1" onkeyup="tableSearch(1)" aria-controls="dataTable" placeholder="Search"></label>
+                                        </div>
+                                    </div>
+                                    <div class="table-responsive table mt-2" role="grid" >
+                                        <table class="table my-0">
+                                            <thead>
+                                            <tr>
+                                                <th>username</th>
+                                                <th>id</th>
+                                                <th></th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <% inGroup.forEach(function (member) { %>
+                                                <tr>
+                                                    <td><img class="rounded-circle me-2" width="30" height="30" src="<%= member.avatar %>"><%= member.login %></td>
+                                                    <td><%= member.id %></td>
+                                                    <td style="text-align: right;"><a class="btn btn-sm btn-danger" href="/admin/members/<%= group.name %>/delete/<%= member.id %>"><i class="far fa-trash-alt"></i></a></td>
+
+                                                </tr>
+                                            <% }) %>
+                                            </tbody>
+                                            <tfoot>
+                                            <tr></tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+                <div class="card shadow mb-5">
+                    <div class="card-header py-3">
+                        <p class="text-primary m-0 fw-bold">Server linked</p>
+                    </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-6">
@@ -15,27 +88,25 @@
                                                     <option value="all" selected="">all</option>
                                                 </select>&nbsp;</label></div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="text-md-end dataTables_filter" id="dataTable_filter"><label class="form-label">
-                                                <input type="search" class="form-control form-control-sm" id="tableInput" onkeyup="tableSearch()" aria-controls="dataTable" placeholder="Search"></label>
-                                        </div>
-                                    </div>
                                 </div>
                                 <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
-                                    <table class="table my-0" id="tableEnabled">
+                                    <table class="table my-0" id="tableEnabled2">
                                         <thead>
                                         <tr>
-                                            <th>Username</th>
-                                            <th>id</th>
+                                            <th>hostname</th>
+                                            <th>ip</th>
+                                            <th>user</th>
                                             <th></th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <% outGroup.forEach(function (member) { %>
+                                        <% outServer.forEach(function (access) { %>
                                             <tr>
-                                                <td><img class="rounded-circle me-2" width="30" height="30" src="<%= member.avatar %>"><%= member.login %></td>
-                                                <td><%= member.id %></td>
-                                                <td style="text-align: right;"><a class="btn btn-sm btn-success" href="/admin/members/<%= group.name %>/add/<%= member.id %>"><i class="text-white fa fa-plus"></i></button></td>
+                                                <td><%= access.hostname %></td>
+                                                <td><%= access.ip %></td>
+                                                <td><%= access.user %></td>
+                                                <td style="text-align: right;"><a class="btn btn-sm btn-success" href="/admin/accesses/<%= group.name %>/add/<%= access.hostname %>"><i class="fas fa-plus text-white"></i></a></td>
+
                                             </tr>
                                         <% }) %>
                                         </tbody>
@@ -48,32 +119,26 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="row">
-                                    <div class="col-md-6 text-nowrap">
-                                        <div id="dataTable_length" class="dataTables_length" aria-controls="dataTable"><label class="form-label">Show&nbsp;<select class="d-inline-block form-select form-select-sm">
-                                                    <option value="all" selected="">all</option>
-                                                </select>&nbsp;</label></div>
+                                    <div class="text-md-end dataTables_filter" id="dataTable_filter"><label class="form-label">
+                                            <input type="search" class="form-control form-control-sm" id="tableInput2" onkeyup="tableSearch(2)" aria-controls="dataTable" placeholder="Search"></label>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="text-md-end dataTables_filter" id="dataTable_filter"><label class="form-label">
-                                                <input type="search" class="form-control form-control-sm" id="tableInput" onkeyup="tableSearch()" aria-controls="dataTable" placeholder="Search"></label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
+                                <div class="table-responsive table mt-2" id="dataTable2" role="grid" aria-describedby="dataTable_info">
                                     <table class="table my-0" id="tableEnabled">
                                         <thead>
                                         <tr>
-                                            <th>username</th>
-                                            <th>id</th>
+                                            <th>hostname</th>
+                                            <th>ip</th>
+                                            <th>user</th>
                                             <th></th>
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <% inGroup.forEach(function (member) { %>
+                                        <% inServer.forEach(function (access) { %>
                                         <tr>
-                                                <td><img class="rounded-circle me-2" width="30" height="30" src="<%= member.avatar %>"><%= member.login %></td>
-                                                <td><%= member.id %></td>
-                                                <td style="text-align: right;"><a class="btn btn-sm btn-danger" href="/admin/members/<%= group.name %>/delete/<%= member.id %>"><i class="far fa-trash-alt"></i></a></td>
+                                                <td><%= access.hostname %></td>
+                                                <td><%= access.ip %></td>
+                                                <td><%= access.user %></td>
+                                                <td style="text-align: right;"><a class="btn btn-sm btn-danger" href="/admin/accesses/<%= group.name %>/delete/<%= access.hostname %>"><i class="far fa-trash-alt"></i></a></td>
 
                                         </tr>
                                         <% }) %>
@@ -86,7 +151,6 @@
                             </div>
                         </div>
                     </div>
-                </form>
                 </div>
             </div>
         </div>

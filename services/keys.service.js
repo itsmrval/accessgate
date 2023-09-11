@@ -1,13 +1,13 @@
 const Key = require('../model/key.model')
 
-const regexp = /^\S*$/;
+const regexp_space = /^\S*$/;
 
 async function addKey(content, name, idOwner) {
     Key.findOne({where: { idOwner: idOwner, name: name}}).then((result) => {
         if (result) {
            return false;
         } else {
-            if (content && name && idOwner && regexp.test(name, idOwner, content)) {
+            if (content && name && idOwner && regexp_space.test(name, idOwner, content)) {
                 Key.create({
                     idOwner: idOwner,
                     content: content,
@@ -25,7 +25,7 @@ async function addKey(content, name, idOwner) {
 
 async function delKey(name, idOwner) {
     Key.findOne({where: { name: name, idOwner: idOwner}}).then((result) => {
-        if (result && regexp.test(name, idOwner)) {
+        if (result && regexp_space.test(name, idOwner)) {
             result.destroy()
                 .then(() => {
                     console.log('key for ' + result.idOwner + ' deleted from database')

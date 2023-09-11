@@ -7,6 +7,8 @@ Server.init({
     hostname: {
         type: DataTypes.STRING,
         required: true,
+        unique: true,
+        primaryKey: true,
     },
     ip: {
         type: DataTypes.STRING,

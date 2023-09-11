@@ -1,9 +1,10 @@
 const express = require('express');
-const User = require("../../model/user.model");
-const Group = require("../../model/group.model");
+
 const Server = require("../../model/server.model");
+
 memberService = require("../../services/members.service");
 serverService = require("../../services/server.service");
+
 var router = express.Router();
 
 

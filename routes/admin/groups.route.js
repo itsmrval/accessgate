@@ -1,10 +1,13 @@
 const express = require('express');
+
 const User = require("../../model/user.model");
 const Group = require("../../model/group.model");
-groupService = require("../../services/group.service");
-memberService = require("../../services/members.service");
-var router = express.Router();
+const Server = require("../../model/server.model");
 
+groupService = require("../../services/groups.service");
+memberService = require("../../services/members.service");
+
+var router = express.Router();
 
 router.get("/", (req, res) => {
     try {
@@ -52,7 +55,16 @@ router.get("/:name", async (req, res) => {
                                 delete users[user]
                             }
                         }
-                        res.render('admin/group_edit', { "group": group, "inGroup": result, "outGroup": users })
+                        groupService.groupServerList(req.params.name).then((result2) => {
+                            Server.findAll().then((servers) => {
+                                for (server in servers) {
+                                    if (JSON.stringify(result2).includes(servers[server].dataValues.hostname)) {
+                                        delete servers[server]
+                                    }
+                                }
+                                res.render('admin/group_edit', { "group": group, "inGroup": result, "outGroup": users, "inServer": result2, "outServer": servers});
+                            });
+                        })
                     });
                 })
             });

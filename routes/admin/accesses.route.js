@@ -1,13 +1,13 @@
 const express = require('express');
-
 groupService = require("../../services/groups.service");
 memberService = require("../../services/members.service");
+accessesService = require("../../services/accesses.service");
 
 var router = express.Router();
 
-router.get('/:name/add/:user', (req, res) => {
+router.get('/:name/add/:server', (req, res) => {
     try {
-        memberService.addMember(req.params.user, req.params.name).then((result) => {
+        accessesService.addAccess(req.params.server, req.params.name).then((result) => {
             res.redirect('/admin/groups/' + req.params.name)
         });
     } catch(e) {
@@ -15,9 +15,9 @@ router.get('/:name/add/:user', (req, res) => {
     }
 })
 
-router.get('/:name/delete/:user', (req, res) => {
+router.get('/:name/delete/:server', (req, res) => {
     try {
-        memberService.delMember(req.params.user, req.params.name).then((result) => {
+        accessesService.delAccess(req.params.server, req.params.name).then((result) => {
             res.redirect('/admin/groups/' + req.params.name)
         });
     } catch(e) {

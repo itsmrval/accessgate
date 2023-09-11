@@ -7,6 +7,7 @@ User.init({
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
+        unique: true,
         required: true,
     },
     admin: {
