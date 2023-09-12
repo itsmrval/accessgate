@@ -24,6 +24,10 @@ Server.init({
     secret: {
         type: DataTypes.STRING,
         required: true,
+    },
+    tmp: {
+        type: DataTypes.STRING,
+        required: true,
     }
 }, {
     sequelize,

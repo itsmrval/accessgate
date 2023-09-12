@@ -107,8 +107,6 @@ async function groupServerList(groupName) {
 }
 
 
-groupServerList('admin')
-
 module.exports = {
     addGroup,
     delGroup,

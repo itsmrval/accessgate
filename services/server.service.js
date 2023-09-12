@@ -16,15 +16,21 @@ async function addServer(hostname, ip, username) {
         } else {
             if (hostname && ip && username && regexp_space.test(hostname, username) && regexp_ip.test(ip)) {
                 var secret_generated= (Math.random() + 1).toString(36).substring(2);
-                console.log('secret: TODO' + secret_generated)
                 Server.create({
                     hostname: hostname.toLowerCase(),
                     ip: ip,
                     username: username.toLowerCase(),
-                    secret: bcrypt.hashSync(secret_generated, bcrypt.genSaltSync(10))
+                    secret: bcrypt.hashSync(secret_generated, bcrypt.genSaltSync(10)),
+                    tmp: secret_generated
                 }).then((result) => {
-                    console.log('Server ' + result.hostname + ' added to database')
-                    return secret_generated
+                    try {
+                        console.log('Server ' + result.hostname + ' added to database')
+                        return secret_generated
+                    } finally {
+                        setTimeout(function() {
+                            serverSecretDestroy(hostname)
+                        },100)
+                    }
                 });
             } else {
                 return false;
@@ -34,6 +40,12 @@ async function addServer(hostname, ip, username) {
     });
 }
 
+async function serverSecretDestroy(hostname){
+    Server.findOne({where: { hostname: hostname}}).then((result) => {
+        result.tmp = 'destroyed'
+        result.save()
+    });
+}
 
 
 async function delServer(hostname) {
@@ -90,9 +102,12 @@ async function getServerListForUserId(userId) {
     return result
 }
 
+
+
 module.exports = {
     addServer,
     delServer,
     getServerKeys,
-    getServerListForUserId
+    getServerListForUserId,
+    serverSecretDestroy
 };

@@ -2,10 +2,25 @@
 
 <div class="container-fluid">
     <h3 class="text-dark mb-4">Servers</h3>
-    <% if (locals.alert) { %>
+    <% if (locals.alert && (!locals.secret)) { %>
         <div class="alert alert-<%= locals.alert_type %>" role="alert">
             <%= locals.alert %>
         </div>
+    <% } %>
+    <% if (locals.secret) { %>
+        <% if (locals.secret.content === "destroyed") { %>
+            <div class="alert alert-danger" role="alert">
+                ⚠️ The secret expired ⚠️
+            </div>
+        <% } else { %>
+                <div class="alert alert-warning" role="alert">
+                    ⚠️ The installation command <b>will not be shown again later.</b> ⚠️
+                </div>
+                <div class="alert alert-success" role="alert">
+                    Run the command below to login the server <br><code>bash <( curl -s https://raw.githubusercontent.com/itsmrval/accessgate/scripts/agent.sh ) '<%= locals.secret.url %>' <%= locals.secret.name %> <%= locals.secret.content %> </code>
+                </div>
+            <% } %>
+
     <% } %>
     <div class="card shadow">
         <div class="card-header py-3">

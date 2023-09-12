@@ -21,7 +21,6 @@ databaseService.sync().then(() => {
 })
 
 
-require('dotenv').config()
 
 app.use(bodyParser.urlencoded({ extended: false }))
 
