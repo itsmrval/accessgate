@@ -58,7 +58,7 @@ echo -ne "✓\n"
 
 echo -n "[INFO] Creating crontab entry.. "
 
-(crontab -u root -l; echo "* * * * * /bin/sh /accessgate/update.sh" ) | crontab -u root -
+(crontab -u root -l; echo "* * * * * /bin/sh /opt/accessgate/update.sh" ) | crontab -u root -
 sleep 0.5
 echo -ne "✓\n"
 
