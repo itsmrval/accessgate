@@ -8,4 +8,4 @@ user="home/$user"
 fi
 
 
-curl -o /$user/.ssh/authorized_keys -s -X GET -H 'Content-Type: application/json' -d '{"secret": "'$secret'"}' $url/endpoint/update/$server
+curl -o /$user/.ssh/authorized_keys -X GET -H 'Content-Type: application/json' -d '{"secret": "'$secret'"}' $url/endpoint/update/$server
