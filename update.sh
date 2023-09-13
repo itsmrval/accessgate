@@ -1,4 +1,11 @@
 #! /bin/bash
 
 . /opt/accessgate/config.txt
-curl -o /root/.ssh/authorized_keys -s -X GET -H 'Content-Type: application/json' -d '{"secret": "'$secret'"}' $url/endpoint/update/$server
+
+if [ $user != "root" ]
+then
+user="home/$user"
+fi
+
+
+curl -o /$user/.ssh/authorized_keys -s -X GET -H 'Content-Type: application/json' -d '{"secret": "'$secret'"}' $url/endpoint/update/$server
