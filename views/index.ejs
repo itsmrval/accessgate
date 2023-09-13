@@ -63,7 +63,10 @@
                                         <div class="col me-2">
                                             <h6 class="mb-0 text-primary"><strong><%= x %></strong></h6><span class="text-xs"><i class="fas fa-clock"> </i> <b>Last pull:</b> <%= servers[x].lastPull %></span>
                                         </div>
-                                        <div class="col-auto"><code><%= servers[x].username %>@<%= servers[x].ip %></code></div>
+                                        <div class="col"><code><%= servers[x].username %>@<%= servers[x].ip %></code></div>
+
+                                        <div class="col-auto"><a href="ssh://<%= servers[x].username %>@<%= servers[x].ip %>" class="btn btn-sm btn-primary"><i class="fas fa-terminal"></i> Connect</a></div>
+
                                     </div>
                                 </li>
                             <% } %>

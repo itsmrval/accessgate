@@ -20,7 +20,9 @@ router.get("/", (req, res) => {
                     if (server.hostname === req.query.server) {
                         secret_display.content = server.tmp
                         secret_display.url = process.env.APP_URL
-                        secret_display.name = server.hostname
+                        secret_display.name = server.hostname,
+                        secret_display.user = server.username
+
                     }
                 })
             }

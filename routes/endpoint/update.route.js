@@ -19,6 +19,9 @@ router.get("/:server", async (req, res) => {
                             raw += '# ' + x + '\n' + result[x] + '\n\n'
                         }
                         res.send(raw)
+                        server.lastPull = 
+                        server.save()
+
                     })
                 } else {
                     res.send("invalid request")

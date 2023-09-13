@@ -1,5 +1,6 @@
 const {default: axios} = require("axios");
 const User = require('../model/user.model')
+const userService = require("./users.service");
 
 async function getToken(code) {
     var client_id = process.env.GITHUB_CLIENT_ID
@@ -37,6 +38,11 @@ async function syncUser(user) {
                 avatar: user.avatar_url,
                 displayName: user.name
             }).then(() => {
+                User.findAll().then((users) => {
+                  if (users.length === 1) {
+                    userService.makeAdmin(user.login)
+                  }
+                })
                 console.log('user ' + user.login + ' added to database')
             });
         }

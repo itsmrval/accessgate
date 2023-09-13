@@ -12,15 +12,12 @@ serverService = require("./services/server.service");
 const User = require('./model/user.model')
 const Key = require('./model/key.model')
 const Member = require("./model/member.model");
-
+const {makeAdmin} = require("./services/users.service");
 const app = express();
-
 
 databaseService.sync().then(() => {
     console.log("Database ready");
 })
-
-
 
 app.use(bodyParser.urlencoded({ extended: false }))
 
@@ -78,7 +75,7 @@ app.get("/login", (req, res) => {
     res.render('login')
 });
 
-userService.makeAdmin("itsmrval")
+    
 
 app.use('/admin/', require('./routes/admin.route'));
 app.use('/auth/', require('./routes/auth.route'));

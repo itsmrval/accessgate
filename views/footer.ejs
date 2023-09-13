@@ -28,6 +28,20 @@
         }
     }
 
+
+    function resizeTextArea(textarea) {
+        const { style, value } = textarea;
+        style.height = style.minHeight = 'auto';
+        style.minHeight = `${ Math.min(textarea.scrollHeight + 4, parseInt(textarea.style.maxHeight)) }px`;
+        style.height = `${ textarea.scrollHeight + 4 }px`;
+    }
+
+    const textarea = document.getElementById('textarea');
+
+    textarea.addEventListener('input', () => {
+        resizeTextArea(textarea);
+    });
+
 </script>
 </body>
 </html>

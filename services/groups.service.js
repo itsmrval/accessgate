@@ -27,8 +27,6 @@ async function addGroup(name) {
     });
 }
 
-
-
 async function delGroup(name) {
     Group.findOne({where: { name: name}}).then((result) => {
         if (result && regexp_space.test(name)) {
