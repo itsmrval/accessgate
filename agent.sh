@@ -3,6 +3,7 @@
 url=$1
 server=$2
 secret=$3
+user=$4
 rootpath="/opt/accessgate"
 updateScriptUrl=https://raw.githubusercontent.com/itsmrval/accessgate/scripts/update.sh
 
@@ -49,6 +50,7 @@ tee -a $rootpath/config.txt > /dev/null <<EOT
 server=$server
 url=$url
 secret=$secret
+user=$user
 EOT
 echo -ne "✓\n"
 
