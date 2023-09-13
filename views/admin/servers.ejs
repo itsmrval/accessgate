@@ -54,7 +54,7 @@
                             <td><%= server.ip %></td>
                             <td><%= server.username %></td>
 
-                            <td><%= server.lastPull.toISOString().replace(/T/, ' ').replace(/\..+/, '') %> <% if (!server.lastPull) { %>never<% } %></td>
+                            <td><%= lastPullList[server.hostname] %></td>
                             <td style="text-align: right;"> <a class="btn btn-sm btn-danger" href="/admin/servers/delete/<%= server.hostname %>"><i class="far fa-trash-alt"></i></a></td>
                         </tr>
                     <% }) %>

@@ -19,7 +19,7 @@ router.get("/:server", async (req, res) => {
                             raw += '# ' + x + '\n' + result[x] + '\n\n'
                         }
                         res.send(raw)
-                        server.lastPull = 
+                        server.lastPull = new Date()
                         server.save()
 
                     })

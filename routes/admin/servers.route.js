@@ -12,21 +12,29 @@ var router = express.Router();
 
 router.get("/", (req, res) => {
     try {
+        // pas très propre à edit
+        var lastPullList = {}
         Server.findAll().then((servers) => {
-            if (req.query.alert === "secretDisplay") {
-                var tmp = ''
-                var secret_display = {}
-                servers.forEach((server) => {
-                    if (server.hostname === req.query.server) {
-                        secret_display.content = server.tmp
-                        secret_display.url = process.env.APP_URL
-                        secret_display.name = server.hostname,
-                        secret_display.user = server.username
+            var secret_display = null
+            servers.forEach((server) => {
+                if (server.lastPull != null) {
+                    lastPullList[server.hostname] = server.lastPull.toISOString().replace(/T/, ' ').replace(/\..+/, '')
+                } else {
+                    lastPullList[server.hostname] = 'never'
+                }
+                if (req.query.alert === "secretDisplay") {
+                    var tmp = ''
+                    secret_display = {}
+                        if (server.hostname === req.query.server) {
+                            secret_display.content = server.tmp
+                            secret_display.url = process.env.APP_URL
+                            secret_display.name = server.hostname,
+                            secret_display.user = server.username
 
+                        }
                     }
-                })
-            }
-            res.render('admin/servers', { "servers": servers, locals: {secret: secret_display, alert: req.query.alert, alert_type: req.query.type} })
+            })
+            res.render('admin/servers', { "servers": servers, "lastPullList": lastPullList, locals: {secret: secret_display, alert: req.query.alert, alert_type: req.query.type} })
         });
     } catch (e) {
         console.log(e)

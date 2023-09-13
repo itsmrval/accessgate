@@ -75,13 +75,13 @@ app.get("/login", (req, res) => {
     res.render('login')
 });
 
-    
+
 
 app.use('/admin/', require('./routes/admin.route'));
 app.use('/auth/', require('./routes/auth.route'));
 app.use('/keys/', require('./routes/keys.route'));
 app.use('/endpoint', require('./routes/endpoint.route'))
 
-app.listen(8080, () => {
+app.listen(process.env.APP_PORT, () => {
     console.log("running");
 })
