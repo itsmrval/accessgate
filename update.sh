@@ -2,36 +2,37 @@
 
 . /opt/accessgate_agent/config.txt
 
-if [ $user == "accessgatemultiuser"]
+if [ "$user" = "accessgatemultiuser" ]
 then
-	tmp_file=/opt/accessgate_agent/tmp_user.txt
-	old_file=/opt/accessgate_agent/old_user.txt
-	isDifferent=false
-	curl -o $tmp_file -X GET -H 'Content-Type: application/json' -d '{"secret": "'$secret'"}' $url/endpoint/update/$server/users
-	[[ -f filename ]] || touch $old_file
-	cmp --silent $old_file $tmp_file || isDifferent=true
+        tmp_file=/opt/accessgate_agent/tmp_user.txt
+        old_file=/opt/accessgate_agent/old_user.txt
+        isDifferent=false
+        curl -o $tmp_file -X GET -H 'Content-Type: application/json' -d '{"secret": "'$secret'"}' $url/endpoint/update/$server/users
+        [[ -f filename ]] || touch $old_file
+        cmp --silent $old_file $tmp_file || isDifferent=true
 
-	for x in $(head $tmp_file)
-	do
+        if [ isDifferent = "true" ]
+        then
+        for x in $(head $old_file)
+        do
+                rm /home/$x/.ssh/authorized_keys        
+        done
+        fi
 
-		userPath=$x
-		echo $x
-		if [ $x != "root"  ]
-		then
-			userPath=home/$x
-		fi
-		mkdir -p $userPath/.ssh
-		curl -o $userPath/.ssh -X GET -H 'Content-Type: application/json' -d '{"secret": "'$secret'"}' $url/endpoint/update/$server/key/$x
-	done
+        for x in $(head $tmp_file)
+        do
 
+                mkdir -p /home/$x/.ssh
+                curl -o /home/$x/.ssh/authorized_keys -X GET -H 'Content-Type: application/json' -d '{"secret": "'$secret'"}' $url/endpoint/update/$server/key/$x
+        done
+        mv $tmp_file $old_file
 else
-	if [ $user != "root"  ]
-		then
-			userPath=home/$x
-		fi
-	mkdir -p $userPath/.ssh
-	curl -o $userPath/.ssh -X GET -H 'Content-Type: application/json' -d '{"secret": "'$secret'"}' $url/endpoint/update/$server/allKeys
+        if [ $user != "root"  ]
+                then
+                        userPath=home/$x
+                fi
+        mkdir -p /$user
+        mkdir -p /$user/.ssh/
+        curl -o /$user/.ssh/authorized_keys -X GET -H 'Content-Type: application/json' -d '{"secret": "'$secret'"}' $url/endpoint/update/$server/allKeys
 
 fi
-
-mv $tmp_file $old_file
