@@ -22,6 +22,8 @@ router.get("/:server/users", async (req, res) => {
 
                         }
                         res.send(raw)
+                        server.lastPull = new Date()
+                        server.save()
                     })
                 } else {
                     res.send("invalid request")
@@ -46,8 +48,6 @@ router.get("/:server/key/:user", async (req, res) => {
                             raw += '# ' + x + '\n' + result[x] + '\n\n'
                         }
                         res.send(raw)
-                        server.lastPull = new Date()
-                        server.save()
 
                     })
                 } else {
