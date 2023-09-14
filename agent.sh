@@ -4,7 +4,7 @@ url=$1
 server=$2
 secret=$3
 user=$4
-rootpath="/opt/accessgate"
+rootpath="/opt/accessgate_agent"
 updateScriptUrl=https://raw.githubusercontent.com/itsmrval/accessgate/scripts/update.sh
 
 
@@ -32,7 +32,7 @@ echo -ne "✓\n"
 
 echo -ne "[INFO] Testing parameters.. "
 
-secretRequest=$(curl -s -X GET -H 'Content-Type: application/json' -d '{"secret": "'$secret'"}' $url/endpoint/update/$server)
+secretRequest=$(curl -s -X GET -H 'Content-Type: application/json' -d '{"secret": "'$secret'"}' $url/endpoint/update/$server/users)
 
 if [ "$secretRequest" = "invalid request" ]
 then
@@ -60,7 +60,7 @@ echo -ne "✓\n"
 
 echo -n "[INFO] Creating crontab entry.. "
 
-(crontab -u root -l; echo "* * * * * /bin/sh /opt/accessgate/update.sh" ) | crontab -u root -
+(crontab -u root -l; echo "* * * * * /bin/sh /opt/accessgate_agent/update.sh" ) | crontab -u root -
 sleep 0.5
 echo -ne "✓\n"
 
