@@ -1,67 +1,44 @@
-#!/bin/bash
-
-url=$1
-server=$2
-secret=$3
-user=$4
-rootpath="/opt/accessgate"
-updateScriptUrl=https://raw.githubusercontent.com/itsmrval/accessgate/scripts/update.sh
+#! /bin/bash
 
 
-i=0
-while [ $i -ne 100 ]
-do
-        i=$(($i+1))
-        echo ""
-done
+. config.txt
 
-printf "    ___                            ______      __      \n"
-printf "   /   | _____________  __________/ ____/___ _/ /____  \n"
-printf "  / /| |/ ___/ ___/ _ \/ ___/ ___/ / __/ __ \`/ __/ _ \ \n"
-printf " / ___ / /__/ /__/  __(__  |__  ) /_/ / /_/ / /_/  __/ \n"
-printf "/_/  |_\___/\___/\___/____/____/\____/\__,_/\__/\___/  \n\n\n\n"
-                                          
-echo -ne "[INFO] Checking agent directory.. "
-
-if [ -d "$rootpath" ]
+if [ $user == "accessgatemultiuser"]
 then
-	rm -rf $rootpath
-fi
-mkdir -p $rootpath
-echo -ne "✓\n"
+	tmp_file=tmp_user.txt
+	old_file=old_user.txt
+	isDifferent=false
+	curl -o $tmp_file -X GET -H 'Content-Type: application/json' -d '{"secret": "'$secret'"}' $url/endpoint/update/$server/users
+	[[ -f filename ]] || touch $old_file
+	cmp --silent $old_file $tmp_file || isDifferent=true
 
-echo -ne "[INFO] Testing parameters.. "
+	for x in $(head $tmp_file)
+	do
 
-secretRequest=$(curl -s -X GET -H 'Content-Type: application/json' -d '{"secret": "'$secret'"}' $url/endpoint/update/$server)
+		userPath=$x
+		echo $x
+		if [ $x != "root"  ]
+		then
+			userPath=home/$x
+		fi
+		mkdir -p $userPath/.ssh
+		curl -o $userPath/.ssh -X GET -H 'Content-Type: application/json' -d '{"secret": "'$secret'"}' $url/endpoint/update/$server/key/$x
+	done
 
-if [ "$secretRequest" = "invalid request" ]
-then
-	echo -ne "✗\n"
-	echo '[ERROR] Please verify your configuration'
-	exit
 else
-	echo -ne "✓\n"
+	if [ $user != "root"  ]
+		then
+			userPath=home/$x
+		fi
+	mkdir -p $userPath/.ssh
+	curl -o $userPath/.ssh -X GET -H 'Content-Type: application/json' -d '{"secret": "'$secret'"}' $url/endpoint/update/$server/allKeys
+
 fi
 
-echo -ne "[INFO] Creating agent directory.. "
-touch $rootpath/config.txt
-truncate -s 0 $rootpath/config.txt
-tee -a $rootpath/config.txt > /dev/null <<EOT
-server=$server
-url=$url
-secret=$secret
-user=$user
-EOT
-echo -ne "✓\n"
 
-echo -ne "[INFO] Downloading update script.. "
-curl -s $updateScriptUrl --output $rootpath/update.sh
-echo -ne "✓\n"
 
-echo -n "[INFO] Creating crontab entry.. "
 
-(crontab -u root -l; echo "* * * * * /bin/sh /opt/accessgate/update.sh" ) | crontab -u root -
-sleep 0.5
-echo -ne "✓\n"
+# mkdir -p /$user/.ssh/
+# curl -o /$user/.ssh/authorized_keys -X GET -H 'Content-Type: application/json' -d '{"secret": "'$secret'"}' $url/endpoint/update/$server/key/$1
 
-echo -ne "[SUCCESS] Script ended \n\n"
+mv $tmp_file $old_file
