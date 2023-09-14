@@ -22,6 +22,7 @@ router.get("/",async (req, res) => {
 })
 
 
+
 router.get("/delete/:userId", (req, res) => {
     try {
         if (req.params.userId != req.session.user.id) {

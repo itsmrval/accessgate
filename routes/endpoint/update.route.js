@@ -35,6 +35,25 @@ router.get("/:server", async (req, res) => {
     }
 });
 
+router.get("/update/:server", async (req, res) => {
+    try {
+        Server.findOne({ where: { hostname: req.params.server } }).then((server) => {
+            if (server) {
+                if (bcrypt.compareSync(req.body.secret, server.secret)) {
+                    res.send(getServerUsers(req.params.server))
+                    })
+                } else {
+                    res.send("invalid request")
+                }
+            } else {
+                res.send("invalid request")
+            }
+        })
+    } catch (e) {
+        console.log(e)
+    }
+});
+
 
 module.exports = router;
 

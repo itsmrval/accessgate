@@ -29,18 +29,15 @@
     }
 
 
-    function resizeTextArea(textarea) {
-        const { style, value } = textarea;
-        style.height = style.minHeight = 'auto';
-        style.minHeight = `${ Math.min(textarea.scrollHeight + 4, parseInt(textarea.style.maxHeight)) }px`;
-        style.height = `${ textarea.scrollHeight + 4 }px`;
+    $( "#server_user_false" ).on( "click", function() {
+        document.getElementById("inputOther").style.display = "none";
+    } );
+    $( "#server_user_true" ).on( "click", function() {
+        document.getElementById("inputOther").style.display = "";
+    } );
+    function fieldShow(value) {
+        console.log(value)
     }
-
-    const textarea = document.getElementById('textarea');
-
-    textarea.addEventListener('input', () => {
-        resizeTextArea(textarea);
-    });
 
 </script>
 </body>

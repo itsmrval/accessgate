@@ -21,7 +21,7 @@ router.get("/callback", async (req, res) => {
             req.session.admin = user.admin;
             res.redirect("/");
         } else {
-            res.send("An error occured");
+            res.send("An error occurred");
         }
     } catch (e) {
         console.log(e)

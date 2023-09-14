@@ -32,19 +32,19 @@ async function syncUser(user) {
                 console.log('user ' + user.login + ' updated in database')
             });
         } else {
-            User.create({
-                id: user.id,
-                login: user.login,
-                avatar: user.avatar_url,
-                displayName: user.name
-            }).then(() => {
-                User.findAll().then((users) => {
-                  if (users.length === 1) {
-                    userService.makeAdmin(user.login)
-                  }
+            User.findAll().then((users) => {
+                User.create({
+                    id: user.id,
+                    login: user.login,
+                    avatar: user.avatar_url,
+                    displayName: user.name,
+                    admin: (users.length === 1),
+                    serverUsername: false,
+
+                }).then(() => {
+                    console.log('user ' + user.login + ' added to database')
                 })
-                console.log('user ' + user.login + ' added to database')
-            });
+            })
         }
     });
 }

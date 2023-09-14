@@ -27,6 +27,10 @@ User.init({
         type: DataTypes.STRING,
         required: true,
     },
+    serverUsername : {
+        type: DataTypes.STRING,
+        required: true,
+    }
 }, {
     sequelize,
     modelName: 'user'

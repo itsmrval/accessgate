@@ -30,6 +30,7 @@
                                     <th>username</th>
                                     <th>id</th>
                                     <th>admin</th>
+                                    <th>server user</th>
                                     <th>updated</th>
                                     <th></th>
                                 </tr>
@@ -40,7 +41,8 @@
                                     <td><img class="rounded-circle me-2" width="30" height="30" src="<%= user.avatar %>"><%= user.login %></td>
                                     <td><%= user.id %></td>
                                     <td><%= user.admin %></td>
-                                    <td><%= user.updatedAt %></td>
+                                    <td><%= user.serverUsername %></td>
+                                    <td><%= new Date(user.updatedAt).toLocaleString() %></td>
                                     <td style="text-align: right;"><a class="btn btn-sm btn-primary" href="/admin/users/<%= user.id %>"><i class="fas fa-key"></i></a> <a class="btn btn-sm btn-danger" href="/admin/users/delete/<%= user.id %>"><i class="far fa-trash-alt"></i></a></td>
 
                                 </tr>

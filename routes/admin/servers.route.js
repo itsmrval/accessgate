@@ -51,7 +51,10 @@ router.get("/", (req, res) => {
 
 router.post("/add", (req, res) => {
     try {
-        if (req.body.server_hostname && req.body.server_ip && req.body.server_username) {
+        if (req.body.server_hostname && req.body.server_ip && req.body.server_multi && req.body.server_username) {
+            if (req.body.server_multi === 'true') {
+                req.body.server_username = "accessGateMultiuser"
+            }
             serverService.addServer(req.body.server_hostname, req.body.server_ip, req.body.server_username).then((secret) => {
                 res.redirect(url.format({
                     pathname:'/admin/servers',
@@ -60,7 +63,6 @@ router.post("/add", (req, res) => {
                         "alert": "secretDisplay"
                     }
                 }));
-
             })
         } else {
             res.redirect(url.format({
