@@ -8,7 +8,7 @@ then
         old_file=/opt/accessgate_agent/old_user.txt
         isDifferent=false
         curl -o $tmp_file -X GET -H 'Content-Type: application/json' -d '{"secret": "'$secret'"}' $url/endpoint/update/$server/users
-        [[ -f filename ]] || touch $old_file
+        touch $old_file
         cmp --silent $old_file $tmp_file || isDifferent=true
 
         if [ isDifferent = "true" ]
