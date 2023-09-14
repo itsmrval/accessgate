@@ -68,8 +68,8 @@ async function delServer(hostname) {
     });
 }
 
-async function getServerKeys(server) {
-    const dump = await sequelize.query('SELECT name, content FROM servers JOIN accesses on accesses.serverHostname = servers.hostname JOIN members on members.groupName = accesses.groupName JOIN keys on keys.idOwner = members.userid WHERE serverHostname = \'' + server + '\'', {});
+async function getServerUserKey(server, serverUsername) {
+    const dump = await sequelize.query('SELECT name, content FROM servers JOIN accesses on accesses.serverHostname = servers.hostname JOIN members on members.groupName = accesses.groupName JOIN keys on keys.idOwner = members.userid JOIN users on users.id= members.userid WHERE serverHostname = \'' + server + '\' AND serverUsername = \'' + serverUsername + '\'' , {});
     result = {}
     console.log(dump)
     for (x in dump) {
@@ -85,7 +85,7 @@ async function getServerKeys(server) {
 }
 
 async function getServerUsers(server) {
-    const dump = await sequelize.query('SELECT DISTINCT serverUsername FROM servers JOIN users on users.id = members.userId JOIN accesses on accesses.serverHostname = servers.hostname JOIN members on members.groupName = accesses.groupName WHERE serverHostname = \'' + server + '\'', {});
+    const dump = await sequelize.query('SELECT DISTINCT login, userId, serverUsername FROM servers JOIN users on users.id = members.userId JOIN accesses on accesses.serverHostname = servers.hostname JOIN members on members.groupName = accesses.groupName WHERE serverHostname = \'' + server + '\'', {});
     return dump[0]
 }
 
@@ -114,7 +114,7 @@ module.exports = {
     getServerUsers,
     addServer,
     delServer,
-    getServerKeys,
+    getServerUserKey,
     getServerListForUserId,
     serverSecretDestroy
 };

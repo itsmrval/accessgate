@@ -38,8 +38,8 @@ async function syncUser(user) {
                     login: user.login,
                     avatar: user.avatar_url,
                     displayName: user.name,
-                    admin: (users.length === 1),
-                    serverUsername: false,
+                    admin: (users.length === 0),
+                    serverUsername: user.login,
 
                 }).then(() => {
                     console.log('user ' + user.login + ' added to database')

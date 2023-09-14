@@ -7,13 +7,37 @@ const bcrypt = require("bcrypt");
 
 const serverService = require("../../services/server.service");
 
-
-router.get("/:server", async (req, res) => {
+router.get("/:server/users", async (req, res) => {
     try {
         Server.findOne({ where: { hostname: req.params.server } }).then((server) => {
             if (server) {
                 if (bcrypt.compareSync(req.body.secret, server.secret)) {
-                    serverService.getServerKeys(req.params.server).then((result) => {
+                    serverService.getServerUsers(req.params.server).then((result) => {
+                        console.log(result[0].serverUsername)
+                        var raw = ''
+                        for (x in result) {
+                            raw += '# ' + result[x].login + ' (' + result[x].userId + ')' + '\n' + result[x].serverUsername + '\n\n'
+                        }
+                        res.send(raw)
+                    })
+                } else {
+                    res.send("invalid request")
+                }
+            } else {
+                res.send("invalid request")
+            }
+        })
+    } catch (e) {
+        console.log(e)
+    }
+});
+
+router.get("/:server/key/:user", async (req, res) => {
+    try {
+        Server.findOne({ where: { hostname: req.params.server } }).then((server) => {
+            if (server) {
+                if (bcrypt.compareSync(req.body.secret, server.secret)) {
+                    serverService.getServerUserKey(req.params.server, req.params.user).then((result) => {
                         var raw = ''
                         for (x in result) {
                             raw += '# ' + x + '\n' + result[x] + '\n\n'
@@ -34,26 +58,6 @@ router.get("/:server", async (req, res) => {
         console.log(e)
     }
 });
-
-router.get("/update/:server", async (req, res) => {
-    try {
-        Server.findOne({ where: { hostname: req.params.server } }).then((server) => {
-            if (server) {
-                if (bcrypt.compareSync(req.body.secret, server.secret)) {
-                    res.send(getServerUsers(req.params.server))
-                    })
-                } else {
-                    res.send("invalid request")
-                }
-            } else {
-                res.send("invalid request")
-            }
-        })
-    } catch (e) {
-        console.log(e)
-    }
-});
-
 
 module.exports = router;
 
