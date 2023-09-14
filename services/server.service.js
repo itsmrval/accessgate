@@ -84,6 +84,22 @@ async function getServerUserKey(server, serverUsername) {
     return result
 }
 
+async function getServerKeys(server) {
+    const dump = await sequelize.query('SELECT name, content FROM servers JOIN accesses on accesses.serverHostname = servers.hostname JOIN members on members.groupName = accesses.groupName JOIN keys on keys.idOwner = members.userid WHERE serverHostname = \'' + server + '\'', {});
+    result = {}
+    console.log(dump)
+    for (x in dump) {
+        for (y in dump[x]) {
+            try {
+                if (dump[x][y]) {
+                    result[dump[x][y].name] = dump[x][y].content.replace(/(\r\n|\n|\r)/gm, "");
+                }
+            } catch (e) {}
+        }
+    }
+    return result
+}
+
 async function getServerUsers(server) {
     const dump = await sequelize.query('SELECT DISTINCT login, userId, serverUsername FROM servers JOIN users on users.id = members.userId JOIN accesses on accesses.serverHostname = servers.hostname JOIN members on members.groupName = accesses.groupName WHERE serverHostname = \'' + server + '\'', {});
     return dump[0]
@@ -112,6 +128,7 @@ async function getServerListForUserId(userId) {
 
 module.exports = {
     getServerUsers,
+    getServerKeys,
     addServer,
     delServer,
     getServerUserKey,

@@ -16,7 +16,7 @@ router.get("/:server/users", async (req, res) => {
                         console.log(result[0].serverUsername)
                         var raw = ''
                         for (x in result) {
-                            raw += '# ' + result[x].login + ' (' + result[x].userId + ')' + '\n' + result[x].serverUsername + '\n\n'
+                            raw += result[x].serverUsername + '\n'
                         }
                         res.send(raw)
                     })
@@ -59,6 +59,31 @@ router.get("/:server/key/:user", async (req, res) => {
     }
 });
 
+router.get("/:server/allkeys", async (req, res) => {
+    try {
+        Server.findOne({ where: { hostname: req.params.server } }).then((server) => {
+            if (server) {
+                if (bcrypt.compareSync(req.body.secret, server.secret)) {
+                    serverService.getServerKeys(req.params.server).then((result) => {
+                        var raw = ''
+                        for (x in result) {
+                            raw += '# ' + x + '\n' + result[x] + '\n\n'
+                        }
+                        res.send(raw)
+                        server.lastPull = new Date()
+                        server.save()
+
+                    })
+                } else {
+                    res.send("invalid request")
+                }
+            } else {
+                res.send("invalid request")
+            }
+        })
+    } catch (e) {
+        console.log(e)
+    }
+});
+
 module.exports = router;
-
-
