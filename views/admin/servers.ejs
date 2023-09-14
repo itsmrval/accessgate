@@ -49,6 +49,7 @@
                     </thead>
                     <tbody>
                     <% servers.forEach(function (server) { %>
+                        <% if (server.username === "accessgatemultiuser") { server.username = "dynamic" } %>
                         <tr>
                             <td><%= server.hostname %></td>
                             <td><%= server.ip %></td>

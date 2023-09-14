@@ -58,6 +58,7 @@
                         </div>
                         <ul class="list-group list-group-flush">
                             <% for (x in servers) { %>
+                            <% if (servers[x].username === "accessgatemultiuser") { servers[x].username = session_user.serverUsername } %>
                                 <li class="list-group-item">
                                     <div class="row align-items-center no-gutters">
                                         <div class="col me-2">
@@ -69,6 +70,7 @@
 
                                     </div>
                                 </li>
+
                             <% } %>
 
 

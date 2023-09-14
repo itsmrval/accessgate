@@ -13,10 +13,13 @@ router.get("/:server/users", async (req, res) => {
             if (server) {
                 if (bcrypt.compareSync(req.body.secret, server.secret)) {
                     serverService.getServerUsers(req.params.server).then((result) => {
-                        console.log(result[0].serverUsername)
+
                         var raw = ''
                         for (x in result) {
-                            raw += result[x].serverUsername + '\n'
+                            if (result[x]) {
+                                raw += result[x].serverUsername + '\n'
+                            }
+
                         }
                         res.send(raw)
                     })
