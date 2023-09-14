@@ -18,7 +18,7 @@ router.get("/", (req, res) => {
             var secret_display = null
             servers.forEach((server) => {
                 if (server.lastPull != null) {
-                    lastPullList[server.hostname] = server.lastPull.toISOString().replace(/T/, ' ').replace(/\..+/, '')
+                    lastPullList[server.hostname] = server.lastPull.toLocaleString()
                 } else {
                     lastPullList[server.hostname] = 'never'
                 }

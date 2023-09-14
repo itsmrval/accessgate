@@ -69,9 +69,9 @@ async function delServer(hostname) {
 }
 
 async function getServerKeys(server) {
-    const dump = await sequelize.query('SELECT name,content FROM members JOIN users ON users.id = members.userId JOIN accesses ON members.groupName = members.groupName JOIN keys ON members.userId = keys.idOwner WHERE serverHostname = \'' + server + '\'', {});
+    const dump = await sequelize.query('SELECT name, content FROM servers JOIN accesses on accesses.serverHostname = servers.hostname JOIN members on members.groupName = accesses.groupName JOIN keys on keys.idOwner = members.userid WHERE serverHostname = \'' + server + '\'', {});
     result = {}
-
+    console.log(dump)
     for (x in dump) {
         for (y in dump[x]) {
             try {
@@ -95,7 +95,7 @@ async function getServerListForUserId(userId) {
             result[(dump[0][x].hostname).toString()] = {
                 'username': dump[0][x].username,
                 'ip': dump[0][x].ip,
-                'lastPull': dump[0][x].lastPull
+                'lastPull': new Date(dump[0][x].lastPull).toLocaleString()
             }
         }
     }
