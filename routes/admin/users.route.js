@@ -10,6 +10,8 @@ userService = require("../../services/users.service");
 
 var router = express.Router();
 
+const regexp_space = /^\S*$/;
+
 
 router.get("/",async (req, res) => {
     try {
@@ -115,6 +117,49 @@ router.post("/:id/addKey", (req, res) => {
                         "type": "success"
                     }
                 }));
+            })
+        } else {
+            res.redirect(url.format({
+                pathname:"/admin/users/"+req.params.id,
+                query: {
+                    "alert": "⚠️ Missing or invalid arguments.",
+                    "type": "warning"
+                }
+            }));
+        }
+    } catch(e) {
+        console.log(e)
+        res.redirect(url.format({
+            pathname:'/admin/users',
+            query: {
+                "alert": "⚠️ An error occured, ask your admin to check logs.",
+                "type": "danger"
+            }
+        }));
+    }
+
+})
+
+
+router.post("/:id/update", (req, res) => {
+    try {
+        if (req.body.user_serveruser && regexp_space.test(req.body.user_serveruser)) {
+            User.findOne({ where: { id: req.params.id } }).then((user) => {
+                if (req.body.user_admin) {
+                    user.admin = true
+                } else {
+                    user.admin = false
+                }
+                user.serverUsername = req.body.user_serveruser
+                user.save()
+                res.redirect(url.format({
+                    pathname:"/admin/users/"+req.params.id,
+                    query: {
+                        "alert": "✅ User " + user.login + " updated.",
+                        "type": "success"
+                    }
+                }));
+
             })
         } else {
             res.redirect(url.format({

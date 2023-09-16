@@ -26,7 +26,7 @@
                             <% keys.forEach(function (key) { %>
                                 <tr>
                                     <td><%= key.name %></td>
-                                    <td><%= key.content %></td>
+                                    <td><textarea class="form-control" disabled><%= key.content %></textarea></td>
                                     <td style="text-align: right;"><a class="btn btn-sm btn-danger" href="/admin/users/<%= user.id %>/deleteKey/<%= key.name %>"><i class="far fa-trash-alt"></i></button></td>
                                 </tr>
                             <% }) %>
@@ -46,23 +46,23 @@
             </div>
         </div>
     </div>
+
     <div class="card shadow col-md-6">
         <div class="card-header py-3">
             <p class="text-primary m-0 fw-bold">Other</p>
         </div>
         <div class="card-body">
             <div class="row">
-                <form method="POST" action="/admin/users/<%= user.id %>/updateRole/">
+                <form method="POST" action="/admin/users/<%= user.id %>/update/">
+                    <div class="mb-3"><label class="form-label"><strong>Server user</strong></label><input class="form-control" type="text" value="<%= user.serverUsername %>" name="user_serveruser"></div>
+
                     <div class="mb-3">
-                        <input type="checkbox" id="admin" name="admin" <% if (user.admin) {%> checked <% }%> />
+                        <input type="checkbox" name="user_admin" <% if (user.admin) {%> checked <% }%> />
                         <label for="scales">Admin permissions</label>
                     </div>
                     <div class="mb-3"></div>
                     <div class="mb-3"><button class="btn btn-primary btn-sm" type="submit">Save</button></div>
                 </form>
-
-
-
             </div>
         </div>
     </div>

@@ -5,6 +5,7 @@ accessesService = require("../../services/accesses.service");
 
 var router = express.Router();
 
+
 router.get('/:name/add/:server', (req, res) => {
     try {
         accessesService.addAccess(req.params.server, req.params.name).then((result) => {

@@ -14,6 +14,17 @@ function makeAdmin(login) {
     });
 }
 
+async function updateServerUser(login, serverUsername) {
+    User.findOne({ where: { login: login } }).then((result) => {
+        if (result) {
+            result.serverUsername = serverUsername;
+            result.save().then(() => {
+                console.log('user ' + result.login + ' updated')
+            });
+        }
+    })
+}
+
 async function delUser(id) {
     User.findOne({where: { id: id}}).then((result) => {
 
@@ -31,6 +42,7 @@ async function delUser(id) {
 
 module.exports = {
     makeAdmin,
+    updateServerUser,
     delUser,
 
 };

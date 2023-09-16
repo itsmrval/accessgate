@@ -26,9 +26,7 @@
                                         <% keys.forEach(function (key) { %>
                                             <tr>
                                                 <td><%= key.name %></td>
-
                                                 <td><textarea class="form-control" disabled><%= key.content %></textarea></td>
-
                                                 <td style="text-align: right;"><a class="btn btn-sm btn-danger" href="/keys/delete/<%= key.name %>"><i class="far fa-trash-alt"></i></button></td>
                                             </tr>
                                         <% }) %>
@@ -44,6 +42,21 @@
                                     <div class="mb-3"><button class="btn btn-primary btn-sm" type="submit">Add key</button></div>
                                 </form>
                             </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card shadow col-md-6">
+                    <div class="card-header py-3">
+                        <p class="text-primary m-0 fw-bold">Other</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <form method="POST" action="/keys/username">
+                                <div class="mb-3"><label class="form-label"><strong>Server user</strong></label><input class="form-control" type="text" value="<%= session_user.serverUsername %>" name="key_username"></div>
+
+                                <div class="mb-3"></div>
+                                <div class="mb-3"><button class="btn btn-primary btn-sm" type="submit">Save</button></div>
+                            </form>
                         </div>
                     </div>
                 </div>
