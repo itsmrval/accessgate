@@ -55,7 +55,7 @@ router.post("/add", (req, res) => {
 router.post("/username", (req, res) => {
     try {
         if (req.body.key_username && regexp_space.test(req.body.key_username)) {
-            userService.updateServerUser(req.session.user.login, req.query.key_username).then((result) => {
+            userService.updateServerUser(req.session.user.login, req.body.key_username).then((result) => {
                 res.redirect(url.format({
                     pathname:'/keys',
                     query: {
