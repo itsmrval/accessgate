@@ -9,10 +9,19 @@ then
         isDifferent=false
         curl -o $tmp_file -X GET -H 'Content-Type: application/json' -d '{"secret": "'$secret'"}' $url/endpoint/update/$server/users
         touch $old_file
-        cmp --silent $old_file $tmp_file || isDifferent=true
+        cmp --silent $old_file $tmp_file || isDifferent="true"
 
-        if [ isDifferent = "true" ]
+
+
+
+
+        echo "$isDifferent"
+
+        if [ "$isDifferent" = "true" ]
         then
+
+        echo "oazioajslkvklxjgklfxgjcfklgjfxklgjxklfgk"
+
         for x in $(head $old_file)
         do
                 deluser $x
@@ -38,5 +47,3 @@ else
         mkdir -p /$user/.ssh/
         curl -o /$user/.ssh/authorized_keys -X GET -H 'Content-Type: application/json' -d '{"secret": "'$secret'"}' $url/endpoint/update/$server/allKeys
 
-
-fi
