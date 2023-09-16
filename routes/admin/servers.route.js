@@ -53,7 +53,7 @@ router.get("/", (req, res) => {
 
 router.post("/add", (req, res) => {
     try {
-        if (req.body.server_hostname && req.body.server_ip && req.body.server_multi && req.body.server_username && regexp_ip.test(req.body.server_ip) && regexp_space.test(req.body.server_hostname, req.body.server_username)) {
+        if (req.body.server_hostname && req.body.server_ip && req.body.server_multi && req.body.server_username && regexp_ip.test(req.body.server_ip) && regex_space.test(req.body.server_hostname, req.body.server_username)) {
             if (req.body.server_multi === 'true') {
                 req.body.server_username = "accessGateMultiuser"
             }
