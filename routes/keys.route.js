@@ -20,7 +20,7 @@ router.get('*', (req, res, next) => {
 
 router.post("/add", (req, res) => {
     try {
-        if (req.body.key_content && req.body.key_name && regexp_space.test(req.body.key_content, req.body.key_name)) {
+        if (req.body.key_content && req.body.key_name && regexp_space.test(req.body.key_name)) {
             keyService.addKey(req.body.key_content, req.body.key_name, req.session.user.id).then((result) => {
                 res.redirect(url.format({
                     pathname:'/keys',
