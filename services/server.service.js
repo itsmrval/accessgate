@@ -71,7 +71,6 @@ async function delServer(hostname) {
 async function getServerUserKey(server, serverUsername) {
     const dump = await sequelize.query('SELECT name, content FROM servers JOIN accesses on accesses.serverHostname = servers.hostname JOIN members on members.groupName = accesses.groupName JOIN keys on keys.idOwner = members.userid JOIN users on users.id= members.userid WHERE serverHostname = \'' + server + '\' AND serverUsername = \'' + serverUsername + '\'' , {});
     result = {}
-    console.log(dump)
     for (x in dump) {
         for (y in dump[x]) {
             try {
@@ -87,7 +86,6 @@ async function getServerUserKey(server, serverUsername) {
 async function getServerKeys(server) {
     const dump = await sequelize.query('SELECT name, content FROM servers JOIN accesses on accesses.serverHostname = servers.hostname JOIN members on members.groupName = accesses.groupName JOIN keys on keys.idOwner = members.userid WHERE serverHostname = \'' + server + '\'', {});
     result = {}
-    console.log(dump)
     for (x in dump) {
         for (y in dump[x]) {
             try {
