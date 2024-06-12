@@ -95,8 +95,6 @@ First, install the dependencies required, <b>don't forget to update your system 
   ```
 ### Installation
 
-_Below is an example of how you can instruct your audience on installing and setting up your app. This template doesn't rely on any external dependencies or services._
-
 1. Create directory
    ```sh
    mkdir /opt/accessgate
